@@ -1,6 +1,4 @@
 load ("../COVIDbyCounty.mat")
-save ("cluster_covid_data.mat")
-
 k = 9; % for 9 divisions
 
 random = randperm(225);
@@ -12,6 +10,7 @@ for a = 1:length(random_index)
     end
 end
 
+labeledCNTY_COVID = cat(2, CNTY_COVID, random_index);
 trainingCNTY_COVID = CNTY_COVID(random_index == 1, :);
 testingCNTY_COVID = CNTY_COVID(random_index == 0, :);
 
@@ -19,7 +18,7 @@ testingCNTY_COVID = CNTY_COVID(random_index == 0, :);
 [k_idx, C] = kmeans(trainingCNTY_COVID, k, "Replicates", 5); % this finds the kmeans  CNTY_COVID. I needed to transpose CNTY_COVID because the variables in CNTY_COVID are rows, whereas kmeans considers columns to be variables. Replication makes the kmeans look a whole lot better. 
 
 for i = 1:9
-    caseTrajectories = trainingCNTY_COVID(idx == i, :)'; % uses logical indexing on CNTY_COVID to find the divisions.
+    caseTrajectories = trainingCNTY_COVID(k_idx == i, :)'; % uses logical indexing on CNTY_COVID to find the divisions.
 
     figure;
     tiledlayout(2, 1)
@@ -37,6 +36,4 @@ for i = 1:9
     ylabel("cases per 100k");
 
 end
-
-
-
+save ("cluster_covid_data.mat")
