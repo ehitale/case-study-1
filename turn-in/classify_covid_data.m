@@ -7,15 +7,22 @@ pairDist = zeros(45, 9);
 sPD = zeros(45, 9);
 sPDI = zeros(45, 9);
 
-actualDivisions = strings(45, 1);
+actualTestingDivisions = CNTY_CENSUS.DIVISION(labeledCNTY_COVID(:,157)==1);
+actualTrainingDivisions = CNTY_CENSUS.DIVISION(labeledCNTY_COVID(:,157)==0);
 
-for i = 1:45 
-    for j = 1:225
-        if labeledCNTY_COVID(j, end) == 0 
-            actualDivisions(i) = CNTY_CENSUS{j, 3}; % not quite working
-        end
-    end
-end
+% CNTY_CENSUS.DIVISION(123)
+% CNTY_CENSUS.DIVISION(3)
+% CNTY_CENSUS.DIVISION(46)
+
+CNTY_CENSUS.STNAME(actualTestingDivisions == 1)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 2)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 3)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 4)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 5)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 6)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 7)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 8)
+CNTY_CENSUS.STNAME(actualTestingDivisions == 9)
 
 for i = 1:size(testingCNTY_COVID, 1) % 1:45
     % figure; 
@@ -30,12 +37,12 @@ for i = 1:size(testingCNTY_COVID, 1) % 1:45
 
 end
 
-for i = 1:size(testingCNTY_COVID, 1) % 1:45
-    fprintf("%d is the closest cluster for county %d\n", sPDI(i, 1), i)
-    % fprintf("", something that returns the actual division of each case trajecory)
-
-    % if the two are the same, yay! else, nay!
-end
+% for i = 1:size(testingCNTY_COVID, 1) % 1:45
+%     fprintf("%d is the closest cluster for county %d\n", sPDI(i, 1), i)
+%     % fprintf("", something that returns the actual division of each case trajecory)
+% 
+%     % if the two are the same, yay! else, nay!
+% end
 
 % alpha = [1, 2, 3];
 % beta = [7, 2, 3];
