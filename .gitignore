@@ -1,3 +1,9 @@
 *.asv
 /html/*
 turn-in/*.mat
+Case-study-LaTeX-template.pdf
+Cover-sheet.pdf
+IEEEtran.cls
+case-study.tex
+cover-sheet.tex
+fig1.png
