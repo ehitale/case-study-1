@@ -15,13 +15,13 @@ trainingCNTY_COVID = CNTY_COVID(random_index == 1, :);
 testingCNTY_COVID = CNTY_COVID(random_index == 0, :);
 
 
-[k_idx, C] = kmeans(trainingCNTY_COVID, k, "Replicates", 5); % this finds the kmeans  CNTY_COVID. I needed to transpose CNTY_COVID because the variables in CNTY_COVID are rows, whereas kmeans considers columns to be variables. Replication makes the kmeans look a whole lot better. 
+[k_idx, C] = kmeans(trainingCNTY_COVID, k, "Replicates", 5); % this finds the kmeans  CNTY_COVID. Replication makes the kmeans look a whole lot better. 
 
 for i = 1:9
     caseTrajectories = trainingCNTY_COVID(k_idx == i, :)'; % uses logical indexing on CNTY_COVID to find the clusters.
 
     figure;
-    tiledlayout(2, 1)
+    tiledlayout(3, 1)
 
     nexttile;
     plot(C(i, :));

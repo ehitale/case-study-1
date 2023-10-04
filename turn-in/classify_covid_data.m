@@ -7,22 +7,36 @@ pairDist = zeros(45, 9);
 sPD = zeros(45, 9);
 sPDI = zeros(45, 9);
 
-actualTestingDivisions = CNTY_CENSUS.DIVISION(labeledCNTY_COVID(:,157)==1);
-actualTrainingDivisions = CNTY_CENSUS.DIVISION(labeledCNTY_COVID(:,157)==0);
+actualTrainingDivisions = CNTY_CENSUS.DIVISION(labeledCNTY_COVID(:,157)==1);
+actualTestingDivisions = CNTY_CENSUS.DIVISION(labeledCNTY_COVID(:,157)==0);
+trainingCNTY_CENSUS = CNTY_CENSUS(random_index==1, :);
 
-% CNTY_CENSUS.DIVISION(123)
-% CNTY_CENSUS.DIVISION(3)
-% CNTY_CENSUS.DIVISION(46)
+divisionNames = unique(sortrows(CNTY_CENSUS, "DIVISION").DIVNAME, "stable");
+divisionMode = zeros(9, 1);
+clusterLabels = strings(9, 1);
 
-CNTY_CENSUS.STNAME(actualTestingDivisions == 1)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 2)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 3)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 4)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 5)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 6)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 7)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 8)
-CNTY_CENSUS.STNAME(actualTestingDivisions == 9)
+validModes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+for i = 1:9
+    clusterDivisions = trainingCNTY_CENSUS.DIVISION(k_idx == i);
+    divisionMode(i) = mode(clusterDivisions);
+
+    for j = 1:9
+        if i ~= j
+            while divisionMode(j) == divisionMode(i)
+                clusterDivisions = clusterDivisions(clusterDivisions ~= divisionMode(i));
+                divisionMode(i) = mode(clusterDivisions); %still bugs, but made lots of progress.
+            end
+        end
+    end
+end
+
+[memberArray, member_index] = ismember(validModes, divisionMode);
+divisionMode(isnan(divisionMode)) = validModes(member_index == 0);
+
+for i = 1:9
+    clusterLabels(i) = divisionNames(divisionMode(i));
+end
 
 for i = 1:size(testingCNTY_COVID, 1) % 1:45
     % figure; 
@@ -36,6 +50,11 @@ for i = 1:size(testingCNTY_COVID, 1) % 1:45
     end 
 
 end
+% in this case, cluster 1 is division 2, cluster 2 is division 1, cluster 3 is division 7, so on and so forth.
+% figure(1);
+% nexttile;
+% 
+% plot(1:0.01:10);
 
 % for i = 1:size(testingCNTY_COVID, 1) % 1:45
 %     fprintf("%d is the closest cluster for county %d\n", sPDI(i, 1), i)
