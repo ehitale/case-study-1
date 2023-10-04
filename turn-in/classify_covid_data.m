@@ -5,8 +5,8 @@ pairDist = zeros(45, k);
 sPD = zeros(45, k);
 sPDI = zeros(45, k);
 
-% actualTrainingDivisions = CNTY_CENSUS.DIVISION(random_index==1);
-% actualTestingDivisions = CNTY_CENSUS.DIVISION(random_index==0);
+actualTrainingDivisions = CNTY_CENSUS.DIVISION(random_index==1);
+actualTestingDivisions = CNTY_CENSUS.DIVISION(random_index==0);
 trainingCNTY_CENSUS = CNTY_CENSUS(random_index==1, :);
 testingCNTY_CENSUS = CNTY_CENSUS(random_index==0, :);
 
@@ -37,9 +37,16 @@ for i = 1:size(testingCNTY_COVID, 1) % 1:45
 
 end
 
-% for i = 1:size(testingCNTY_COVID, 1) % 1:45
-%     fprintf("%d is the closest cluster for county %d\n", sPDI(i, 1), i)
-%     % fprintf("", something that returns the actual division of each case trajecory)
-% 
-%     % if the two are the same, yay! else, nay!
-% end
+%comparision time!!! I need to associate a group of clusters with their
+%respective divisions, remember that more than one cluster can have the
+%same division. Consider group.
+score = 0;
+
+for i = 1:45
+    assumedDivision = divisionMode(sPDI(i, 1)); % cluster 47 is associated with division 8, so the assumed divison is 8. 
+    if assumedDivision == (actualTestingDivisions(i))
+        score = score + 1;
+    end
+end
+
+percentage = (score / 45) * 100; 
